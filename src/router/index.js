@@ -23,7 +23,13 @@ const routes = [
   },
   {
     path: '/admin', // 後台從 admin 開始
-    component: () => import('../views/DashboardView.vue')
+    component: () => import('../views/DashboardView.vue'),
+    children: [
+      {
+        path: 'products',
+        component: () => import('../views/AdminProducts.vue')
+      }
+    ]
   },
   {
     path: '/about',
@@ -37,7 +43,8 @@ const routes = [
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
+  linkActiveClass: 'active'// 定義你要啟用的 active 樣式名稱
 })
 
 export default router
