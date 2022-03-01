@@ -3,9 +3,19 @@ import Home from '../views/Home.vue'
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '/', // 前台從根目錄開始
+    component: () => import('../views/FrontView.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Home',
+        component: Home
+      }
+    ]
+  },
+  {
+    path: '/admin', // 後台從 admin 開始
+    component: () => import('../views/DashboardView.vue')
   },
   {
     path: '/about',
