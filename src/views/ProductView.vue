@@ -19,7 +19,7 @@ export default {
       const { id } = this.$route.params
       console.log(this.$route)
       // const url =
-      this.$http.get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/product/${id}`)
+      this.$http(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/product/${id}`)
         .then(res => {
           this.product = res.data.product
         })
