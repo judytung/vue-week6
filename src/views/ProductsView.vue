@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 // import vueAxios from 'vue-axios'
 export default {
   data () {
@@ -28,7 +27,7 @@ export default {
   methods: {
     getProducts () {
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`
-      axios.get(url)
+      this.$http.get(url)
         .then(res => {
           this.products = res.data.products
         })

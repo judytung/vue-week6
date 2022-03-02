@@ -7,8 +7,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-// import vueAxios from 'vue-axios'
 export default {
   data () {
     return {
@@ -20,8 +18,8 @@ export default {
       // $route 本身是一個物件可以用來取值
       const { id } = this.$route.params
       console.log(this.$route)
-      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/product/${id}`
-      axios.get(url)
+      // const url =
+      this.$http.get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/product/${id}`)
         .then(res => {
           this.product = res.data.product
         })
