@@ -8,7 +8,7 @@
           <div class="card-body">
             <h5 class="card-title">{{ product.title }}</h5>
             <p class="card-text">{{ product.description }}</p>
-            <a href="#" class="btn btn-primary">加入購物車</a>
+            <router-link :to="`/product/${product.id}`" class="btn btn-primary">加入購物車</router-link>
           </div>
         </div>
       </div>
