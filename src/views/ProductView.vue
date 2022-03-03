@@ -1,8 +1,19 @@
 <template>
   <h2>單一產品</h2>
   <div class="container">
-    {{ product }}
-    <img :src="product.imageUrl" alt="">
+    <div class="d-flex">
+      <div class="row">
+        <div class="col-6">
+          <img :src="product.imageUrl" class="img-fluid" alt="">
+        </div>
+        <div class="col-6">
+          <h3>{{ product.title }}</h3>
+          <p>{{ product.content }}</p>
+          <span>原價： {{ product.origin_price }}</span><br>
+          <span>特價：{{ product.price }} </span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
