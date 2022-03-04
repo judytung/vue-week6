@@ -29,8 +29,8 @@ export default {
       // $route 本身是一個物件可以用來取值
       const { id } = this.$route.params
       console.log(this.$route)
-      // const url =
-      this.$http(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/product/${id}`)
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/product/${id}`
+      this.$http(url)
         .then(res => {
           this.product = res.data.product
         })

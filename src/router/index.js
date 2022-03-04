@@ -26,6 +26,10 @@ const routes = [
     ]
   },
   {
+    path: '/login',
+    component: () => import('../views/LoginView.vue')
+  },
+  {
     path: '/admin', // 後台從 admin 開始
     component: () => import('../views/DashboardView.vue'),
     children: [
