@@ -9,6 +9,7 @@
           <label for="password" class="fs-5">密碼</label>
           <input type="password" class="form-control" id="password" placeholder="password" v-model="user.password"/>
           <button type="button" @click="logIn" class="btn btn-primary mt-4 float-end">登入</button>
+          <router-link class="btn btn-outline-primary mt-4 me-3 float-end d-block" to="/">回到前台</router-link>
         </form>
       </div>
     </div>

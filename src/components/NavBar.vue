@@ -16,6 +16,9 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/cart">購物車</router-link>
           </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/admin/products">後台產品</router-link>
+          </li>
         </ul>
       </div>
       <button type="button" class="btn btn-primary position-relative" @click="changeCart">
@@ -25,7 +28,7 @@
           </svg>
         </span>
         <span class="badge rounded-pill bg-danger">{{ cartData.carts.length }}</span>
-        </button>
+      </button>
     </div>
   </nav>
 </template>
