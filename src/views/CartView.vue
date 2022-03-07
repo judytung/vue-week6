@@ -7,7 +7,7 @@
         <!-- 產品Modal -->
         <!-- 購物車列表  :disabled="cartData.carts?.length === 0"-->
         <div class="text-end mb-3">
-          <button class="btn btn-outline-danger" type="button" v-if="cartData.carts?.length !== 0">清空購物車</button>
+          <button class="btn btn-outline-danger" type="button" v-if="cartData.carts?.length !== 0" @click="delCarts">清空購物車</button>
         </div>
         <!---->
         <table class="table align-middle" v-if="cartData.carts?.length !== 0">
@@ -157,20 +157,6 @@ export default {
     }
   },
   methods: {
-    // getProducts () {
-    //   const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`
-    //   this.$http.get(url)
-    //     .then(res => {
-    //       this.products = res.data.products
-    //     })
-    //     .catch((err) => {
-    //       alert(err.data.message)
-    //     })
-    // },
-    // openProductModal (id) {
-    //   this.productId = id // 這裏的 id 對應到 html product-modal 元件裡的 :id = "productId" ，productId 是外層資料定義的
-    //   this.$refs.productModal.openModal() // 取得 productModal 這個元件結點後使用它裡面的 openModal
-    // },
     // 取得購物車列表
     getCart () {
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`
@@ -212,6 +198,17 @@ export default {
           this.isLoadingItem = '' // 讀取完清空
         })
         .catch((err) => {
+          alert(err.data.message)
+        })
+    },
+    delCarts () {
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/carts`
+      this.$http.delete(url)
+        .then(res => {
+          alert(res.data.message)
+          this.getCart()
+        })
+        .catch(err => {
           alert(err.data.message)
         })
     },
