@@ -182,26 +182,6 @@ export default {
           alert(err.data.message)
         })
     },
-    // 加入購物車
-    // addToCart (id, qty = 1) { // 參數預設值，數量剛加進來就是一個
-    //   // 根據 api 資料格式建構
-    //   const data = {
-    //     product_id: id,
-    //     qty
-    //   }
-    //   this.isLoadingItem = id
-    //   const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`
-    //   this.$http.post(url, { data }) // 這邊要將資料帶出去
-    //     .then(res => {
-    //       console.log(res)
-    //       this.getCart()
-    //       this.isLoadingItem = ''// 讀取完清空
-    //       // this.$refs.productModal.closeModal()
-    //     })
-    //     // .catch((err) => {
-    //     //   alert(err.data.message)
-    //     // })
-    // },
     // 刪除購物車品項
     removeCartItem (id) {
       this.isLoadingItem = id
