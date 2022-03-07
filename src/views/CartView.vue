@@ -5,58 +5,18 @@
         <!-- 產品Modal -->
         <!-- <product-modal ref="productModal" :id="productId" @add-cart="addToCart"></product-modal> -->
         <!-- 產品Modal -->
-        <table class="table align-middle">
-          <thead>
-            <tr>
-              <th>圖片</th>
-              <th>商品名稱</th>
-              <th>價格</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="product in products" :key="product.id">
-              <td style="width: 200px">
-                <div :style="{ backgroundImage: `url(${product.imageUrl})` }" style="height: 100px; background-size: cover; background-position: center"></div>
-              </td>
-              <td>
-                {{ product.title }}
-              </td>
-              <td>
-                <div class="h5" v-if="product.price === product.origin_price">{{ product.price }} 元</div>
-                <div v-else>
-                  <del class="h6">原價 {{ product.origin_price }} 元</del>
-                  <div class="h5">現在只要 {{ product.price }} 元</div>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group btn-group-sm">
-                  <button type="button" class="btn btn-outline-secondary" @click="openProductModal(product.id)">
-                    查看更多
-                  </button>
-                  <!-- 當 isLoadingItem 跟 product.id 一致時會套用 disabled 狀態，等 ajax 執行完就會恢復 -->
-                  <button type="button" class="btn btn-outline-danger" @click="addToCart(product.id)" :disabled="isLoadingItem === product.id">
-                    加到購物車
-                    <span class="spinner-border spinner-border-sm" v-show="isLoadingItem === product.id"></span>
-                  </button>
-                  <!-- 點擊時會產生讀取效果 -->
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- 購物車列表 -->
-        <div class="text-end">
-          <button class="btn btn-outline-danger" type="button" :disabled="cartData.carts?.length === 0">清空購物車</button>
+        <!-- 購物車列表  :disabled="cartData.carts?.length === 0"-->
+        <div class="text-end mb-3">
+          <button class="btn btn-outline-danger" type="button" v-if="cartData.carts?.length !== 0">清空購物車</button>
         </div>
         <!---->
-        <table class="table align-middle">
+        <table class="table align-middle" v-if="cartData.carts?.length !== 0">
           <thead>
             <tr>
               <th></th>
               <th>品名</th>
               <th style="width: 150px">數量/單位</th>
-              <th>單價</th>
+              <th class="text-end">單價</th>
             </tr>
           </thead>
           <tbody>
@@ -105,9 +65,14 @@
             </tr> -->
           </tfoot>
         </table>
+            <div class="hover-dark text-center p-3 border border-dark position-relative" v-else>
+              <router-link to="/products" class="hover-light txt-dark text-decoration-none stretched-link">
+                先去買東西
+              </router-link>
+            </div>
       </div>
-      <div class="my-5 row justify-content-center">
-        <!-- <v-form ref="form" class="col-md-6" v-slot="{ errors }" @submit="onSubmit">
+      <div class="my-5 row justify-content-center" v-if="cartData.carts?.length !== 0">
+        <v-form ref="form" class="col-md-6" v-slot="{ errors }" @submit="onSubmit">
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <v-field id="email" name="email" type="email" class="form-control"
@@ -148,12 +113,33 @@
             <button type="submit" class="btn btn-danger"
             :disabled="Object.keys(errors).length > 0 || cartData.carts?.length === 0">送出訂單</button>
           </div>
-        </v-form> -->
+        </v-form>
       </div>
     </div>
 </template>
 
+<style>
+  .hover-dark:hover {
+    background: #000;
+  }
+  .txt-dark {
+    color: #000;
+  }
+  .hover-light:hover {
+    color: #fff;
+  }
+</style>
+
 <script>
+import { defineRule, Form, Field, ErrorMessage, configure } from 'vee-validate'
+import { required, email } from '@vee-validate/rules'
+import { localize, loadLocaleFromURL } from '@vee-validate/i18n'
+defineRule('required', required)
+defineRule('email', email)
+loadLocaleFromURL('https://unpkg.com/@vee-validate/i18n@4.1.0/dist/locale/zh_TW.json')
+configure({ // 用來做一些設定
+  generateMessage: localize('zh_TW')
+})
 export default {
   data () {
     return {
@@ -171,20 +157,20 @@ export default {
     }
   },
   methods: {
-    getProducts () {
-      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`
-      this.$http.get(url)
-        .then(res => {
-          this.products = res.data.products
-        })
-        .catch((err) => {
-          alert(err.data.message)
-        })
-    },
-    openProductModal (id) {
-      this.productId = id // 這裏的 id 對應到 html product-modal 元件裡的 :id = "productId" ，productId 是外層資料定義的
-      this.$refs.productModal.openModal() // 取得 productModal 這個元件結點後使用它裡面的 openModal
-    },
+    // getProducts () {
+    //   const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`
+    //   this.$http.get(url)
+    //     .then(res => {
+    //       this.products = res.data.products
+    //     })
+    //     .catch((err) => {
+    //       alert(err.data.message)
+    //     })
+    // },
+    // openProductModal (id) {
+    //   this.productId = id // 這裏的 id 對應到 html product-modal 元件裡的 :id = "productId" ，productId 是外層資料定義的
+    //   this.$refs.productModal.openModal() // 取得 productModal 這個元件結點後使用它裡面的 openModal
+    // },
     // 取得購物車列表
     getCart () {
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`
@@ -197,25 +183,25 @@ export default {
         })
     },
     // 加入購物車
-    addToCart (id, qty = 1) { // 參數預設值，數量剛加進來就是一個
-      // 根據 api 資料格式建構
-      const data = {
-        product_id: id,
-        qty
-      }
-      this.isLoadingItem = id
-      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`
-      this.$http.post(url, { data }) // 這邊要將資料帶出去
-        .then(res => {
-          console.log(res)
-          this.getCart()
-          this.isLoadingItem = ''// 讀取完清空
-          // this.$refs.productModal.closeModal()
-        })
-        // .catch((err) => {
-        //   alert(err.data.message)
-        // })
-    },
+    // addToCart (id, qty = 1) { // 參數預設值，數量剛加進來就是一個
+    //   // 根據 api 資料格式建構
+    //   const data = {
+    //     product_id: id,
+    //     qty
+    //   }
+    //   this.isLoadingItem = id
+    //   const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`
+    //   this.$http.post(url, { data }) // 這邊要將資料帶出去
+    //     .then(res => {
+    //       console.log(res)
+    //       this.getCart()
+    //       this.isLoadingItem = ''// 讀取完清空
+    //       // this.$refs.productModal.closeModal()
+    //     })
+    //     // .catch((err) => {
+    //     //   alert(err.data.message)
+    //     // })
+    // },
     // 刪除購物車品項
     removeCartItem (id) {
       this.isLoadingItem = id
@@ -248,27 +234,27 @@ export default {
         .catch((err) => {
           alert(err.data.message)
         })
+    },
+    // 表單
+    onSubmit () {
+      // console.log(this.user);
+      this.$refs.form.resetForm()
+      this.cartData.carts = ''
+      this.cartData.total = ''
+    },
+    isPhone (value) {
+      const phoneNumber = /^(09)[0-9]{8}$/
+      return phoneNumber.test(value) ? true : '請輸入正確的電話號碼'
     }
-    // // 表單
-    // onSubmit () {
-    //   // console.log(this.user);
-    //   this.$refs.form.resetForm()
-    //   this.cartData.carts = ''
-    //   this.cartData.total = ''
-    // },
-    // isPhone (value) {
-    //   const phoneNumber = /^(09)[0-9]{8}$/
-    //   return phoneNumber.test(value) ? true : '請輸入正確的電話號碼'
-    // }
   },
   // 區域註冊
-  // components: {
-  //   VForm: Form,
-  //   VField: Field,
-  //   ErrorMessage: ErrorMessage,
-  // },
+  components: {
+    VForm: Form,
+    VField: Field,
+    ErrorMessage: ErrorMessage
+  },
   mounted () {
-    this.getProducts()
+    // this.getProducts()
     this.getCart()
   }
 }
