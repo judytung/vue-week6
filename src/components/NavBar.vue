@@ -23,7 +23,7 @@
       </div>
         <a class="btn btn-primary position-relative bg-light border-0" @click="changeCart">
           <i class="bi bi-cart2 fs-4"></i>
-          <span class="badge rounded-pill bg-danger position-absolute start-50">{{ cartData.carts.length }}</span>
+          <span class="badge rounded-pill bg-danger position-absolute start-50 ">{{ cartData.carts.length }}</span>
         </a>
     </div>
   </nav>
